@@ -31,5 +31,28 @@ namespace AzureFunctionHello
 
             return new OkObjectResult(responseMessage);
         }
+
+        [FunctionName("GoodBye")]
+        public static async Task<IActionResult> Run2(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            string name = req.Query["name"];
+
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            dynamic data = JsonConvert.DeserializeObject(requestBody);
+            name = name ?? data?.name;
+
+            string responseMessage = string.IsNullOrEmpty(name)
+                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
+                : $"GoodBye, {name}. The Time is: {DateTime.Now.ToString()}";
+
+            return new OkObjectResult(responseMessage);
+        }
+
+
+
     }
 }
