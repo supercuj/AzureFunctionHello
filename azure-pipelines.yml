@@ -69,6 +69,19 @@ stages:
        inputs:
          project: '**/*.sqlproj'
 
+    - task: CopyFiles@2
+      displayName: 'Copy dacpac file to staging directory'
+      inputs:
+        contents: |
+          AzureFunctionHelloDB/bin/**/*.dacpac
+        targetFolder: '$(Build.StagingDirectory)'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish DACPAC Artifact'
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: dropDacpac
+      condition: succeededOrFailed()
 
 - stage: Deploy
   displayName: Deploy stage
