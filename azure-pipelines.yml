@@ -23,7 +23,7 @@ variables:
 
 stages:
 - stage: Build
-  displayName: Build stage
+  displayName: Build FunctionApp and SQL Project stage
 
   jobs:
   - job: Build
@@ -33,7 +33,7 @@ stages:
 
     steps:
     - task: DotNetCoreCLI@2
-      displayName: Build
+      displayName: 'Build Function App'
       inputs:
         command: 'build'
         projects: |
@@ -51,6 +51,18 @@ stages:
 
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: drop
+  
+- stage: BuildDACPAC
+  jobs:
+  - job: BuildDacpac
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+     - task: VSBuild@1
+       displayName: 'Build the database project'
+       inputs:
+         project: '**/*.sqlproj'
+
 
 - stage: Deploy
   displayName: Deploy stage
