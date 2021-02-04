@@ -77,7 +77,7 @@ stages:
          targetFolder: '$(Build.StagingDirectory)'
 
      - task: PublishBuildArtifacts@1
-       displayName: 'Publish DACPAC Artifact'
+       displayName: 'Publish DACPAC Artifact to $(Build.ArtifactStagingDirectory)'
        inputs:
          pathToPublish: '$(Build.ArtifactStagingDirectory)'
          artifactName: dropDacpac
@@ -103,7 +103,7 @@ stages:
 
           steps:
           - task: AzureFunctionApp@1
-            displayName: 'Azure functions app deploy'
+            displayName: 'Azure functions app deploy - $(Pipeline.Workspace)'
             inputs:
               azureSubscription: '$(azureSubscription)'
               appType: functionApp
@@ -120,5 +120,5 @@ stages:
               SqlUsername: '$(SqlUsername)'
               SqlPassword: '$(SqlPassword)'
               deployType: 'DacpacTask'
-              deploymentAction: 'Script'
-              DacpacFile: '$(Pipeline.Workspace)/dropDacpac/AzureFunctionHelloDB/bin/Debug/AzureFunctionHelloDB.dacpac'
+              deploymentAction: 'Publish'
+              DacpacFile: '$(Build.ArtifactStagingDirectory)/AzureFunctionHelloDB.dacpac'
