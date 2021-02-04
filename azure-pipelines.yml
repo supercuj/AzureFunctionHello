@@ -121,4 +121,4 @@ stages:
               SqlPassword: '$(SqlPassword)'
               deployType: 'DacpacTask'
               deploymentAction: 'Publish'
-              DacpacFile: '$(Build.ArtifactStagingDirectory)/AzureFunctionHelloDB.dacpac'
+              DacpacFile: '$(System.DefaultWorkingDirectory)/dropDacpac/AzureFunctionHelloDB/bin/Debug/AzureFunctionHelloDB.dacpac'
