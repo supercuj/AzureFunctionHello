@@ -94,6 +94,8 @@ stages:
     environment: 'development'
     pool:
       vmImage: $(vmImageName)
+    variables:
+    - group: 'Release'
 
     strategy:
       runOnce:
@@ -107,3 +109,13 @@ stages:
               appType: functionApp
               appName: $(functionAppName)
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+
+          - task: SqlAzureDacpacDeployment@1
+            displayName: 'Execute Azure SQL : DacpacTask for AzureFunctionHelloDB'
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              ServerName: '$(SQLServerName)'
+              DatabaseName: '$(SQLDatabaseName)'
+              SqlUsername: '$(SqlUsername)'
+              SqlPassword: '$(SqlPassword)'
+              DacpacFile: '$(Pipeline.Workspace)/dropDacpac/AzureFunctionHelloDB/bin/Debug/AzureFunctionHelloDB.dacpac'
