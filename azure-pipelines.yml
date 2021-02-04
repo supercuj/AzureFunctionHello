@@ -114,8 +114,11 @@ stages:
             displayName: 'Execute Azure SQL : DacpacTask for AzureFunctionHelloDB'
             inputs:
               azureSubscription: '$(azureSubscription)'
+              authenticationType: 'server'
               ServerName: '$(SQLServerName)'
               DatabaseName: '$(SQLDatabaseName)'
               SqlUsername: '$(SqlUsername)'
               SqlPassword: '$(SqlPassword)'
+              deployType: 'DacpacTask'
+              deploymentAction: 'Script'
               DacpacFile: '$(Pipeline.Workspace)/dropDacpac/AzureFunctionHelloDB/bin/Debug/AzureFunctionHelloDB.dacpac'
